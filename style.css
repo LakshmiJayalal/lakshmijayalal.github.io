@@ -4,7 +4,7 @@
     font-family: 'Poppins', sans-serif;
 }
 .header{
-    min-height: 100vh;
+    min-height: 70vh;
     width: 100%;
     background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(Images/bg.jpg);
     background-position: center;
@@ -49,7 +49,7 @@ nav{
     width: 50%;
     color: #fff;
     position: absolute;
-    top: 20%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
     text-align: center;
@@ -84,13 +84,21 @@ nav .fa{
     display: none;
 }
 @media(max-width: 700px){
+    .header{
+    min-height: 100vh;
+    width: 100%;
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(Images/bg.jpg);
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    }
     .text-box{
-        width: 50%;
+        width: 80%;
         color: #fff;
         position: absolute;
         top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
+        left: 40%;
+        transform: translate(-40%,-50%);
         text-align: center;
     }
     .text-box h1{
@@ -99,6 +107,7 @@ nav .fa{
     }   
     .text-box p{
         font-size: 12px
+        text-align:justify;
     }
     .nav-links ul li{
         list-style: none;
@@ -128,4 +137,45 @@ nav .fa{
      .nav-links ul{
         padding: 30px;
      }
+}
+/*---------Pbls-------*/
+.pblcs{
+    width: 80%;
+    margin: auto;
+    text-align: center;
+    padding-top: 100px;
+    left: 50%;
+}
+h1{
+    font-size: 32px;
+    font-weight: 600;
+    text-align: justify;
+}
+p{
+    color: #777;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 22px;
+    padding: 10px;
+    text-align: justify;
+}
+.courses{
+    width: 80%;
+    margin: auto;
+    text-align: justify;
+    padding-top: 100px;
+}
+h1{
+    font-size: 32px;
+    font-weight: 600;
+    text-align: justify;
+}
+
+p{
+    color: #777;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 22px;
+    padding: 10px;
+    text-align: justify;
 }
