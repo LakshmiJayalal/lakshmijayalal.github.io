@@ -19,14 +19,15 @@
                 <li><a href="Files/cv.pdf" download>CV</a></li> -->
                 <li><a href="#pblcs">PUBLICATIONS</a></li>
                 <li><a href="#courses">COURSES</li>
-                <li><a href="#contact">CONTACT</a></li>
+                <li><a href="">BLOG</a></li>
             </ul>
         </div>
         <i class="fa fa-bars" onclick="showMenu()"></i>
     </nav>
 
     <div class="text-box">
-        <h1><!-- <img src="Images/dp.jpg" alt="Trulli" width="100" height="125"> --> Lakshmi Jayalal         </h1>
+        <h1><!-- <img src="Images/dp.jpg" alt="Trulli" width="100" height="125"> --> Lakshmi Jayalal         </h1><p id="contact">Contact me at gevtvgvg@bhvdg.xjh
+<button onclick="Decrypt()" class="decrypt-btn">(Click me to decrypt)</button></p>
         <p>Hi, I'm currently doing my Ph.D. from Indian Institute of Technology, Madras (IITM) under the guidance of Dr. Sheetal Kalyani. I'm currently exploring the areas of implicit regularization in linear regression problems. <br>I did my post graduate from Indian Institute of Technology (ISM), Dhanbad in communcations and signal processing. My thesis for post graduations is "Digital Signal Processing of Radio Occulted Data" under the guidance of Dr. Jaisingh Thankaraj (IIT Dhanbad) and Dr. Raj Kumar Choudhary (VSSC, ISRO). </p>
         <a href="Files/cv.pdf" download class="btn" >DOWNLOAD RESUME</a>
     </div>
@@ -34,7 +35,15 @@
 <!-- -----Publications------ -->
 <section class="pblcs">
     <h1 id="pblcs">Publications</h1>
-    <p>Will be updated as soon as I publish a paper :). Hopefully sometime soon!!</p>
+    <p>Will be updated as soon as I publish another paper :). Hopefully sometime soon!!</p>
+    <p>
+        <ol>
+            <li>Estimation of frequency residuals in a Radio Occultation experiment : Impact on the derived atmospheric profiles</li>
+            <dd>Keshav Ram Tripati, Raj Kumar Choudhary, Lakshmi Jayalal, Jai Singh Thankaraj, <b>Under review</b></dd>
+            <li>Exploring Power Signatures for Location Forensics of Media Recordings</li>
+            <dd>Unnikrishnan S. Nath, Lakshmi Jayalal, Anjana Raju, Gowri S Gopinath, K. Vishnuprasad, Vineeth. V. Warrier, K. Harigovind, Sreenshan M., P. Noufal, <b>IEEE Signal Processing Society SigPort, 2016 [Online]</b></dd>
+        </ol>
+    </p>
 </section>
 <!-- -----------------Courses------- -->
 <section class="courses">
@@ -49,8 +58,8 @@
     </p> 
 </section>
 <!-- --------Contact------------ -->
-<section class=Contact>
-    <p id="contact">Contact me at gibberish.com</p>
+<section class="Contact">
+   
 </section>
 <!-- -----JavaScript for Toggle Menu-------- -->
 <script>
@@ -60,6 +69,34 @@
     }
     function hideMenu(){
         navLinks.style.right="-200px";
+    }
+    function Decrypt(){
+    document.getElementById("contact").innerHTML ="Contact me at " +startEncryption("gevtvgvg")+"@"+startEncryption("bhvdg")+"."+startEncryption("xjh");
+    }
+    function startEncryption(originalMessage) {
+      let encryptedMessage = "";
+      for (letter of originalMessage) {
+        encryptedMessage += shiftLetter(letter, 5);
+      }
+        return encryptedMessage;
+    }
+    function shiftLetter(letter, shift) {
+      let newLetter = "";
+
+      let letterCode = letter.charCodeAt(0);
+      let newLetterCode = letterCode + (shift % 26);
+
+      if (newLetterCode < 97) {
+        // If new letter goes below "a" aka character code 97
+        newLetterCode += 26;
+      } else if (newLetterCode > 122) {
+        // If new letter goes past "z" aka character code 122
+        newLetterCode -= 26;
+      }
+
+      newLetter = String.fromCharCode(newLetterCode);
+      
+      return newLetter;
     }
 </script>
 </body>
