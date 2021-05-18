@@ -134,6 +134,17 @@ nav .fa{
         cursor: pointer;
         align: right;
     }
+    nav .fa-bars{
+        display: block;
+        color: #fff;
+        margin: 10px;
+        font-size: 22px;
+        cursor: pointer;
+        align: right;
+        position: fixed;
+        top: 12px;
+        left: 12px;
+    }
      .nav-links ul{
         padding: 30px;
      }
@@ -172,6 +183,7 @@ p{
     border: none;
     background: none;
     color: #fff;
+    cursor: pointer;
 }
 
 .Contact{
