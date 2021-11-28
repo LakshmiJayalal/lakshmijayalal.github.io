@@ -148,6 +148,26 @@ nav .fa{
      .nav-links ul{
         padding: 30px;
      }
+    .circular_image {
+          position: absolute;
+          top: 0px;
+          width: 150px;
+          height: 200px;
+          border-radius: 50%;
+          overflow: hidden;
+          background-color: whitesmoke;
+         
+          float: left;/*
+          margin-left: 125px;
+          margin-top: 0px;*/
+          
+          /*for demo*/
+          /*display:inline-block;*/
+          vertical-align:middle;
+        }
+        .circular_image img{
+                width:50%;
+        }
 }
 /*---------Pbls-------*/
 .pblcs{
@@ -179,11 +199,12 @@ p{
 }
 
 .decrypt-btn{
-    padding: 0;
+    padding: 10;
     border: none;
     background: none;
-    color: #fff;
+    color: #f78;
     cursor: pointer;
+    font-size: 17px;
 }
 
 .Contact{
@@ -191,4 +212,19 @@ p{
     margin: auto;
     text-align: justify;
     padding-top: 100px;
+}
+.circular_image {
+  position: absolute;
+  top: 50px;
+  left: -200px;
+  width: 150px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: whitesmoke;
+  display:inline-block;
+  vertical-align:middle;
+}
+.circular_image img{
+  width:50%;
 }
