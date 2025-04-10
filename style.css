@@ -197,7 +197,27 @@ p{
     text-align: justify;
     padding-top: 100px;
 }
+.achievements{
+    width: 50%;
+    margin: auto;
+    text-align: justify;
+    padding-top: 100px;
+}
 
+.projects{
+    width: 50%;
+    margin: auto;
+    text-align: justify;
+    padding-top: 100px;
+}
+.downloads a {
+  color: white;
+  text-decoration: none;
+}
+
+.downloads a:hover {
+  text-decoration: underline;
+}
 .decrypt-btn{
     padding: 10;
     border: none;
