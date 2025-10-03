@@ -6,10 +6,19 @@
 .header{
     min-height: 70vh;
     width: 100%;
-    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(Images/bg.jpg);
+    /* background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(Images/bg.jpg); */
     background-position: center;
     background-size: cover;
     position: relative;
+}
+
+body {
+    /* Set the main background for the whole page */
+    
+    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(Images/bg.jpg);
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
 }
 nav{
     display: flex;
@@ -17,6 +26,12 @@ nav{
     justify-content: space-between;
     align-items: center;
 }
+.logo {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
 .nav-links{
     flex: 1;
     text-align: right;
@@ -248,3 +263,147 @@ p{
 .circular_image img{
   width:50%;
 }
+
+
+/* =============================================== */
+/* === STYLES FOR RESEARCH VISUALIZATION START === */
+/* =============================================== */
+
+/* Wrapper for the main paper content to control width and background */
+.visualization-wrapper {
+    width: 80%;
+    max-width: 1100px;
+    margin: 50px auto;
+    text-align: justify;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    padding: 70px 40px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Flex container for the vertical flow of blocks */
+.paper-flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    width: 100%;
+}
+
+/* Base style for individual content blocks */
+.block {
+    background-color: transparent;
+    padding: 15px;
+    border-radius: 4px;
+    text-align: left;
+    box-shadow: none;
+    border: 1px solid #ddd;
+    width: 100%;
+}
+
+.block h3 { 
+    margin: 0 0 10px 0; 
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #111;
+    padding-bottom: 8px; 
+    border-bottom: 1px solid #ccc; 
+}
+
+/* Overriding the global 'p' tag for better styling inside blocks */
+.block p { 
+    color: #333; 
+    padding: 5px 0 0 0;
+}
+.block p strong { 
+    color: #000; 
+}
+
+/* Themed borders to define the blocks */
+.problem-block { border-left: 4px solid #d32f2f; background: rgba(211, 47, 47, 0.05); }
+.solution-block { border-left: 4px solid #757575; background: rgba(117, 117, 117, 0.05); }
+.method-block { border-left: 4px solid #5f6368; background: rgba(95, 99, 104, 0.05); }
+.validation-block { border-left: 4px solid #424242; background: rgba(66, 66, 66, 0.05); }
+.result-block { border-left: 4px solid #212121; background: rgba(33, 33, 33, 0.05); }
+.conclusion-block { border-left: 4px solid #000; background: rgba(0, 0, 0, 0.05); }
+
+/* Downward arrow between sections */
+.arrow { 
+    font-size: 2.5em; 
+    color: #333; 
+    line-height: 1; 
+}
+
+/* Container for logical groups like "Problem Formulation" */
+.section-container {
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: rgba(255,255,255,0.2);
+}
+
+.section-label {
+    position: static;
+    transform: none;
+    background: none;
+    padding: 0 0 15px 0;
+    font-weight: 600;
+    font-size: 1.5em;
+    color: #000;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 15px;
+}
+
+/* Flex container for side-by-side blocks */
+.horizontal-split {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: space-around;
+    gap: 15px;
+    width: 100%;
+    align-items: stretch;
+}
+
+.horizontal-split > .block {
+    flex: 1;
+    min-width: 280px; 
+}
+
+/* Footer Style */
+footer {
+    background: #111;
+    color: #eee;
+    text-align: center;
+    padding: 2rem 5%;
+}
+.footer-content p {
+    margin-bottom: 1rem;
+    color: #ccc;
+}
+.social-links a {
+    color: #eee;
+    font-size: 1.5rem;
+    margin: 0 10px;
+    transition: color 0.3s ease;
+}
+.social-links a:hover {
+    color: #fff; 
+}
+ 
+/* Responsive adjustments for the visualization */
+@media(max-width: 700px){
+     .visualization-wrapper {
+         width: 95%;
+         padding: 15px;
+     }
+}
+
+/* ============================================= */
+/* === STYLES FOR RESEARCH VISUALIZATION END === */
+/* ============================================= */

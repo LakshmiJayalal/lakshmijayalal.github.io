@@ -2,20 +2,124 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Lakshmi Jayalal | Ph.D.</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Lakshmi Jayalal | Research</title>
+    
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;600;700&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/ce81bc62d6.js" crossorigin="anonymous"></script>
+
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<section class="header">
-    
 
+<header class="header">
+    <nav>
+        <a href="index.html" class="logo">Lakshmi Jayalal</a>
+        <div class="nav-links" id="navLinks">
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+            </ul>
+        </div>
+    </nav>
     <div class="text-box">
-        <h1 style="text-align:center"><i class="fas fa-wrench"></i><!-- <img src="Images/dp.jpg" alt="Trulli" width="100" height="125"> -->   Under Constuction :) </h1>
+        <h1>Tuning-Free Online Robust PCA</h1>
+        <p>Summary</p>
     </div>
-</section>
+</header>
+
+<main class="visualization-wrapper">
+    <div class="paper-flow">
+
+        <div class="section-container">
+            <div class="section-label">I. Problem Formulation</div>
+            <div class="block problem-block">
+                <h3>Existing Challenge in Online Robust PCA (OR-PCA)</h3>
+                <p>The performance of OR-PCA heavily depends on tuning explicit regularization parameters. This tuning is dataset-sensitive, computationally expensive, and impractical for real-world streaming scenarios.</p>
+            </div>
+            <div class="block solution-block">
+                <h3>Proposed Direction: Implicit Regularization (IR)</h3>
+                <p>The paper proposes to eliminate the dependency on tuning parameters by using Implicit Regularization. IR leverages the inherent biases of specific optimization algorithms to guide models towards solutions with desired properties without explicit penalty terms.</p>
+            </div>
+        </div>
+
+        <div class="arrow">&darr;</div>
+
+        <div class="section-container">
+            <div class="section-label">II. Proposed Solution: The TF-ORPCA Framework</div>
+            <div class="block solution-block">
+                <h3>Tuning-Free Online Robust PCA (TF-ORPCA)</h3>
+                <p>A novel framework that integrates three tailored IR techniques, one for each sub-problem in OR-PCA, to remove the need for explicit regularizers.</p>
+            </div>
+            <div class="horizontal-split">
+                <div class="block method-block">
+                    <h3>1. Sparse Outlier Estimation (e<sub>t</sub>)</h3>
+                    <p>Uses a modified gradient descent (<strong>HPGrad</strong>) that implicitly induces sparsity, replacing the explicit <em>l<sub>1</sub></em>-norm penalty.</p>
+                </div>
+                 <div class="block method-block">
+                    <h3>2. Coefficient Estimation (r<sub>t</sub>)</h3>
+                    <p>Uses early-stopped Momentum Gradient Descent (<strong>MGD</strong>), which acts as an implicit <em>l<sub>2</sub></em>-regularizer, replacing the ridge regression penalty.</p>
+                </div>
+                 <div class="block method-block">
+                    <h3>3. Subspace Basis Estimation (L)</h3>
+                    <p>Employs a novel reparameterization and algorithm (<strong>HPGroupGrad</strong>) to implicitly mimic Frobenius norm regularization.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="arrow">&darr;</div>
+
+        <div class="section-container">
+            <div class="section-label">III. Experimental Validation</div>
+            <div class="horizontal-split">
+                <div class="validation-block block">
+                    <h3>A. Synthetic Data Studies</h3>
+                    <p><strong>Setup:</strong> Low-rank matrices were generated and corrupted with sparse outliers. Performance was measured by Expressed Variance (EV).</p>
+                     <div class="block result-block" style="margin-top:10px;">
+                        <p><strong>Finding:</strong> TF-ORPCA is consistently better than standard OR-PCA and achieves performance comparable to manually fine-tuned methods, without requiring any data-dependent tuning.</p>
+                    </div>
+                </div>
+                <div class="validation-block block">
+                    <h3>B. Real-World Data Studies</h3>
+                    <p><strong>Application:</strong> Video surveillance from three datasets (PETS2006, Pedestrians, Bungalows) to separate background (low-rank) from foreground objects (sparse outliers).</p>
+                     <div class="block result-block" style="margin-top:10px;">
+                        <p><strong>Finding:</strong> TF-ORPCA clearly extracts foreground/background components without artifacts (e.g., shadowing) that plague other methods, demonstrating its robustness across diverse datasets.</p>
+                    </div>
+                </div>
+            </div>
+             <div class="block validation-block">
+                <h3>C. Ablation Study</h3>
+                <p><strong>Purpose:</strong> To test the sensitivity of TF-ORPCA to its own fixed hyperparameters (learning rate and initialization value).</p>
+                <div class="block result-block" style="margin-top:10px;">
+                    <p><strong>Finding:</strong> The algorithm is remarkably stable and insensitive to variations in these parameters, highlighting its inherent robustness.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="arrow">&darr;</div>
+
+        <div class="section-container">
+            <div class="section-label">IV. Conclusion & Impact</div>
+            <div class="block conclusion-block">
+                <h3>Key Contributions & Takeaway</h3>
+                <p>The paper successfully introduces TF-ORPCA, a method that leverages three problem-specific IR techniques to eliminate the need for manual regularization parameter tuning. This makes the algorithm robust, insensitive to its own hyperparameters, and highly effective for real-world applications where tuning is impractical.</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <p>&copy; 2025 Lakshmi Jayalal. All Rights Reserved.</p>
+        <div class="social-links">
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="#" aria-label="Google Scholar"><i class="fas fa-graduation-cap"></i></a>
+            <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        </div>
+    </div>
+</footer>
+
 </body>
 </html>
