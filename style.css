@@ -6,7 +6,7 @@
 .header{
     min-height: 70vh;
     width: 100%;
-    /* background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(Images/bg.jpg); */
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(Images/bg.jpg); 
     background-position: center;
     background-size: cover;
     position: relative;
@@ -15,10 +15,10 @@
 body {
     /* Set the main background for the whole page */
     
-    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(Images/bg.jpg);
+    /*background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(Images/bg.jpg);
     background-attachment: fixed;
     background-position: center;
-    background-size: cover;
+    background-size: cover;*/
 }
 nav{
     display: flex;
