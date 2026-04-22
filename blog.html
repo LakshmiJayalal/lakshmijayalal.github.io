@@ -44,7 +44,7 @@ section{padding:3.5rem 0}
 .tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.65rem;padding:.18rem .55rem;border-radius:4px;margin-bottom:.6rem;font-weight:500;letter-spacing:.03em}
 .tag-l1{background:#fde2db;color:#b93e1f}.tag-l2{background:#fef3c7;color:#92400e}.tag-frob{background:#e0e7ff;color:#3730a3}.tag-novel{background:#d1fae5;color:#065f46}
 
-.method-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+.method-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;align-items:start}
 
 .eq-block{background:var(--bg-code);border:1px solid var(--border-light);border-radius:8px;padding:1.1rem 1.4rem;margin:1rem 0;overflow-x:auto}
 
@@ -67,7 +67,10 @@ section{padding:3.5rem 0}
 
 .video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
 .video-cell{text-align:center}
+.video-cell-inner{position:relative;width:100%}
 .video-cell canvas{width:100%;border-radius:6px;border:1px solid var(--border-light);background:#f0ece4;display:block}
+.video-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:6px;border:1px solid var(--border-light);display:block}
+.video-poster.hidden{display:none}
 .video-cell-label{font-size:.72rem;color:var(--text-dim);margin-top:.4rem;font-weight:500}
 .video-cell-label strong{color:var(--accent)}
 
@@ -77,6 +80,12 @@ section{padding:3.5rem 0}
 .video-controls button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 .video-controls .frame-counter{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-dim);margin-left:auto}
 
+.card.expandable{cursor:pointer;user-select:none}
+.card.expandable .card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem}
+.card.expandable .chevron{flex-shrink:0;color:var(--text-dim);font-size:.75rem;margin-top:.2rem;transition:transform .25s}
+.card.expandable.open .chevron{transform:rotate(180deg)}
+.card-expand{display:none;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border-light)}
+.card.expandable.open .card-expand{display:block}
 .comp-header-row{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px;font-size:.7rem;font-weight:600;text-align:center;color:var(--text-dim)}
 .comp-header-row .ours{color:var(--accent);font-weight:700}
 .comp-row{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px}
@@ -91,6 +100,13 @@ footer a{color:var(--accent);text-decoration:none;margin:0 .4rem;transition:colo
 footer a:hover{color:var(--accent-light)}
 
 .reveal{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}
+
+.algo-hint-wrap{position:relative}
+.algo-hint{display:none;position:absolute;right:-185px;top:12px;width:160px;background:var(--bg-highlight);border:1.5px solid var(--accent-border);border-radius:10px;padding:.65rem .85rem;font-size:.73rem;color:var(--accent);text-align:center;font-style:italic;line-height:1.5;cursor:pointer;box-shadow:var(--shadow);transition:background .2s}
+.algo-hint:hover{background:var(--accent-bg)}
+.algo-hint::before{content:'';position:absolute;left:-9px;top:14px;border:5px solid transparent;border-right-color:var(--accent-border)}
+.algo-hint::after{content:'';position:absolute;left:-7px;top:14px;border:5px solid transparent;border-right-color:var(--bg-highlight)}
+@media(min-width:1140px){.algo-hint{display:block}}
 .reveal.visible{opacity:1;transform:translateY(0)}
 
 @media(max-width:700px){.figure-grid,.video-grid{grid-template-columns:1fr}.method-grid{grid-template-columns:1fr}.hero{padding:3.5rem 1.5rem 3rem}section{padding:2.5rem 0}}
@@ -109,7 +125,7 @@ footer a:hover{color:var(--accent-light)}
     <div class="hero-inner">
         <div class="hero-badge"><i class="fas fa-signal"></i> IEEE Signal Processing Letters &middot; </div>
         <h1>Tuning-Free Online<br>Robust <em>PCA</em></h1>
-        <p class="hero-subtitle">Three implicit regularization techniques that eliminate parameter tuning from Online Robust PCA &mdash; with zero dataset-dependent adjustments.</p>
+        <p class="hero-subtitle">Utilize implicit regularization to remove the dependency of Online RPCA on parameter tuning with zero dataset-dependent adjustments.</p>
         <div class="hero-meta">
             <span><strong>Lakshmi Jayalal</strong>, Gokularam Muthukrishnan, Sheetal Kalyani</span>
             <span>IIT Madras</span>
@@ -131,6 +147,13 @@ footer a:hover{color:var(--accent-light)}
     <div class="card card-warm">
         <h3>Three subproblems, two parameters to tune</h3>
         <p>OR-PCA factorizes \(\mathbf{X} = \mathbf{L}\mathbf{R}^\top\) and alternates between estimating the sparse outlier \(\mathbf{e}_t\), the coefficient \(\mathbf{r}_t\), and the subspace basis \(\mathbf{L}\). Each involves an explicit regularizer (\(\lambda_1\) or \(\lambda_2\)) that must be tuned via grid search or cross-validation &mdash; methods that are computationally expensive and often fail to generalize to unseen data.</p>
+        <div class="eq-block">
+            \[\begin{aligned}
+            P_1:&\quad \min_{\mathbf{e}_t} \tfrac{1}{2}\|\mathbf{z}_t - \mathbf{L}\mathbf{r}_t^\top - \mathbf{e}_t\|_F^2 + \lambda_2\|\mathbf{e}_t\|_1 \;\mid\; \{\mathbf{L}, \mathbf{r}_t\}\\[6pt]
+            P_2:&\quad \min_{\mathbf{r}_t} \tfrac{1}{2}\|\mathbf{z}_t - \mathbf{L}\mathbf{r}_t^\top - \mathbf{e}_t\|_F^2 + \tfrac{\lambda_1}{2}\|\mathbf{r}_t\|_2^2 \;\mid\; \{\mathbf{L}, \mathbf{e}_t\}\\[6pt]
+            P_3:&\quad \min_{\mathbf{L}} \tfrac{1}{2}\|\mathbf{z}_t - \mathbf{L}\mathbf{r}_t^\top - \mathbf{e}_t\|_F^2 + \tfrac{\lambda_1}{2}\|\mathbf{L}\|_F^2 \;\mid\; \{\mathbf{e}_t, \mathbf{r}_t\}
+            \end{aligned}\]
+        </div>
     </div>
 </section>
 
@@ -140,22 +163,77 @@ footer a:hover{color:var(--accent-light)}
     <div class="section-label">II. Approach</div>
     <h2 class="section-title">TF-ORPCA &mdash; three implicit regularizers</h2>
     <p class="section-desc">Replace each explicit regularizer with an implicit one that emerges from the optimization algorithm itself.</p>
+    <div class="algo-hint-wrap">
+    <div class="algo-hint">👆 click a card to view its pseudocode</div>
     <div class="method-grid">
-        <div class="card">
-            <span class="tag tag-l1">IMPLICIT &#x2113;&#x2081;</span>
-            <h3>HPGrad &mdash; Sparse outlier \(\mathbf{e}_t\)</h3>
-            <p>Decompose \(\mathbf{e} = \mathbf{m}^{\odot 2} - \mathbf{n}^{\odot 2}\). The multiplicative update drives non-significant components towards zero &mdash; implicit sparsity without \(\lambda_2\).</p>
+        <div class="card expandable">
+            <div class="card-top">
+                <div>
+                    <span class="tag tag-l1">IMPLICIT &#x2113;&#x2081; (Solves P1)</span>
+                    <h3>HPGrad &mdash; Sparse outlier \(\mathbf{e}_t\)</h3>
+                    <p>Decompose \(\mathbf{e} = \mathbf{m}^{\odot 2} - \mathbf{n}^{\odot 2}\). The multiplicative update drives non-significant components towards zero &mdash; implicit sparsity without \(\lambda_2\).</p>
+                </div>
+                <span class="chevron">&#9660;</span>
+            </div>
+            <div class="card-expand">
+                <div class="algo"><span class="kw">Algorithm</span> <span class="fn">HPGrad</span>(\(\tilde{\mathbf{z}}_t,\, T_e\)):
+  <span class="cm">// Init</span>
+  \(\alpha = 10^{-5},\; \eta = 5\times10^{-3}\)
+  \(\mathbf{m} = \alpha\mathbf{1}_p,\; \mathbf{n} = \alpha\mathbf{1}_p,\; \mathbf{e} = \mathbf{0}_p\)
+  <span class="kw">for</span> i = 0 <span class="kw">to</span> \(T_e - 1\):
+    \(\Delta \leftarrow \tfrac{4}{p}(\tilde{\mathbf{z}}_t - \mathbf{e})\)
+    \(\mathbf{m} \leftarrow \mathbf{m} \odot (1 - \eta\Delta)\)
+    \(\mathbf{n} \leftarrow \mathbf{n} \odot (1 + \eta\Delta)\)
+    \(\mathbf{e} \leftarrow \mathbf{m}^{\odot 2} - \mathbf{n}^{\odot 2}\)
+  <span class="kw">return</span> \(\mathbf{e}\)</div>
+            </div>
         </div>
-        <div class="card">
-            <span class="tag tag-l2">IMPLICIT &#x2113;&#x2082;</span>
-            <h3>MGD &mdash; Coefficient \(\mathbf{r}_t\)</h3>
-            <p>Early-stopped momentum gradient descent. The stopping time \(T_r\) is the implicit ridge parameter (\(\lambda = 2/t^2\)), replacing \(\lambda_1\) in the coefficient update.</p>
+        <div class="card expandable">
+            <div class="card-top">
+                <div>
+                    <span class="tag tag-l2">IMPLICIT &#x2113;&#x2082; (Solves P2)</span>
+                    <h3>MGD &mdash; Coefficient \(\mathbf{r}_t\)</h3>
+                    <p>Early-stopped momentum gradient descent. The stopping time \(T_r\) is the implicit ridge parameter (\(\lambda = 2/t^2\)), replacing \(\lambda_1\) in the coefficient update.</p>
+                </div>
+                <span class="chevron">&#9660;</span>
+            </div>
+            <div class="card-expand">
+                <div class="algo"><span class="kw">Algorithm</span> <span class="fn">MGD</span>(\(\tilde{\mathbf{z}}_t,\, \mathbf{L},\, T_r\)):
+  <span class="cm">// Init</span>
+  \(\alpha = 10^{-5},\; \eta = 5\times10^{-3},\; \mu = 0.9\)
+  \(\mathbf{r} = \alpha\mathbf{1}_r,\; \mathbf{v}_r = \mathbf{0}_r\)
+  <span class="kw">for</span> i = 0 <span class="kw">to</span> \(T_r - 1\):
+    \(\Delta \leftarrow \tfrac{4}{p}(\tilde{\mathbf{z}}_t - \mathbf{L}\mathbf{r})\)
+    \(\mathbf{v}_r \leftarrow \mu\mathbf{v}_r - \eta\Delta\)
+    \(\mathbf{r} \leftarrow \mathbf{r} + \mathbf{v}_r\)
+  <span class="kw">return</span> \(\mathbf{r}\)</div>
+            </div>
         </div>
-        <div class="card">
-            <span class="tag tag-frob">IMPLICIT FROBENIUS</span> <span class="tag tag-novel" style="margin-left:.3rem;">NOVEL</span>
-            <h3>HPGroupGrad &mdash; Basis \(\mathbf{L}\)</h3>
-            <p>A new reparameterization \(\mathbf{L} = \mathbf{g}^{\odot 2}\mathbf{1}_r \odot \mathbf{V}\) separates row magnitude from direction, implicitly controlling \(\|\mathbf{L}\|_F^2\) without \(\lambda_1\).</p>
+        <div class="card expandable">
+            <div class="card-top">
+                <div>
+                    <span class="tag tag-frob">IMPLICIT FROBENIUS (Solves P3)</span> <span class="tag tag-novel" style="margin-left:.3rem;">NOVEL</span>
+                    <h3>HPGroupGrad &mdash; Basis \(\mathbf{L}\)</h3>
+                    <p>A new reparameterization \(\mathbf{L} = \mathbf{g}^{\odot 2}\mathbf{1}_r \odot \mathbf{V}\) separates row magnitude from direction, implicitly controlling \(\|\mathbf{L}\|_F^2\) without \(\lambda_1\).</p>
+                </div>
+                <span class="chevron">&#9660;</span>
+            </div>
+            <div class="card-expand">
+                <div class="algo"><span class="kw">Algorithm</span> <span class="fn">HPGroupGrad</span>(\(\mathbf{z}_t,\, \mathbf{r}_t,\, T_L,\, \mathbf{L}\)):
+  <span class="cm">// Init</span>
+  \(\eta = 5\times10^{-3},\; \mathbf{L}_0 = \mathbf{L},\; i = 0\)
+  \(\mathbf{g}_0 = \mathbf{g},\; \mathbf{V}_0 = \mathbf{V}\)
+  <span class="kw">repeat</span>
+    \(\Delta \leftarrow (\mathbf{z}_t - \mathbf{L}\mathbf{r}_t^\top)\mathbf{r}_t\)
+    \(\mathbf{g} \leftarrow \mathbf{g} - \tfrac{\eta}{p}\left(\Delta \odot (\mathbf{g}\mathbf{1}_r^\top) \odot \mathbf{V}\right)\mathbf{1}_r\)
+    \(\mathbf{V} \leftarrow \mathbf{V} - \tfrac{\eta}{p}\,\Delta \odot (\mathbf{g}\mathbf{1}_r^\top)^{\odot 2}\)
+    \(\mathbf{L} \leftarrow (\mathbf{g}^{\odot 2}\mathbf{1}_r^\top) \odot \mathbf{V}\)
+    \(i \leftarrow i + 1\)
+  <span class="kw">until</span> \(i = T_L\)
+  <span class="kw">return</span> \(\mathbf{L}\)</div>
+            </div>
         </div>
+    </div>
     </div>
 </section>
 
@@ -164,7 +242,7 @@ footer a:hover{color:var(--accent-light)}
 <section class="reveal">
     <div class="section-label">III. Algorithm</div>
     <h2 class="section-title">The TF-ORPCA loop</h2>
-    <p class="section-desc">Fixed hyperparameters across all datasets: \(\alpha = 10^{-5}\), \(\eta = 5 \times 10^{-3}\).</p>
+    <!-- <p class="section-desc">Fixed hyperparameters across all datasets: \(\alpha = 10^{-5}\), \(\eta = 5 \times 10^{-3}\).</p> -->
     <div class="algo"><span class="kw">for</span> t = 1 <span class="kw">to</span> n <span class="kw">do</span>
     Reveal z_t
     <span class="kw">repeat</span>
@@ -207,20 +285,29 @@ footer a:hover{color:var(--accent-light)}
         <h3><span class="dot"></span> Bungalows &mdash; Dynamic lighting</h3>
         <div class="video-grid">
             <div class="video-cell">
-                <canvas data-prefix="FiguresFile/bun/Input_bun_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                <div class="video-cell-inner">
+                    <canvas data-prefix="FiguresFile/bun/Input_bun_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                    <img class="video-poster" src="FiguresFile/in001170.png" alt="">
+                </div>
                 <div class="video-cell-label">Input \(\mathbf{z}_t\)</div>
             </div>
             <div class="video-cell">
-                <canvas data-prefix="FiguresFile/bun/Basisbungalows_tforpcaWO_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                <div class="video-cell-inner">
+                    <canvas data-prefix="FiguresFile/bun/Basisbungalows_tforpcaWO_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                    <img class="video-poster" src="FiguresFile/Basisbungalows_tforpcaWO.png" alt="">
+                </div>
                 <div class="video-cell-label"><strong>Ours</strong> &mdash; Background \(\mathbf{L}\)</div>
             </div>
             <div class="video-cell">
-                <canvas data-prefix="FiguresFile/bun/Noisebungalows_tforpcaWO_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                <div class="video-cell-inner">
+                    <canvas data-prefix="FiguresFile/bun/Noisebungalows_tforpcaWO_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                    <img class="video-poster" src="FiguresFile/Noisebungalows_tforpcaWO.png" alt="">
+                </div>
                 <div class="video-cell-label"><strong>Ours</strong> &mdash; Foreground \(\mathbf{E}\)</div>
             </div>
         </div>
         <div class="video-controls">
-            <button class="play-btn active" data-target="player-bun">&#9654; Playing</button>
+            <button class="play-btn" data-target="player-bun">&#9654; Play</button>
             <span class="frame-counter" data-target="player-bun">Frame 2 / 40</span>
         </div>
     </div>
@@ -229,20 +316,29 @@ footer a:hover{color:var(--accent-light)}
         <h3><span class="dot"></span> PETS2006 &mdash; Surveillance</h3>
         <div class="video-grid">
             <div class="video-cell">
-                <canvas data-prefix="FiguresFile/PETS/Input_PETS_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                <div class="video-cell-inner">
+                    <canvas data-prefix="FiguresFile/PETS/Input_PETS_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                    <img class="video-poster" src="FiguresFile/in000120.png" alt="">
+                </div>
                 <div class="video-cell-label">Input \(\mathbf{z}_t\)</div>
             </div>
             <div class="video-cell">
-                <canvas data-prefix="FiguresFile/PETS/BasisPETS_tforpcaWO_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                <div class="video-cell-inner">
+                    <canvas data-prefix="FiguresFile/PETS/BasisPETS_tforpcaWO_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                    <img class="video-poster" src="FiguresFile/BasisPETS_tforpcaWO.png" alt="">
+                </div>
                 <div class="video-cell-label"><strong>Ours</strong> &mdash; Background \(\mathbf{L}\)</div>
             </div>
             <div class="video-cell">
-                <canvas data-prefix="FiguresFile/PETS/NoisePETS_tforpcaWO_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                <div class="video-cell-inner">
+                    <canvas data-prefix="FiguresFile/PETS/NoisePETS_tforpcaWO_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                    <img class="video-poster" src="FiguresFile/NoisePETS_tforpcaWO.png" alt="">
+                </div>
                 <div class="video-cell-label"><strong>Ours</strong> &mdash; Foreground \(\mathbf{E}\)</div>
             </div>
         </div>
         <div class="video-controls">
-            <button class="play-btn active" data-target="player-pets">&#9654; Playing</button>
+            <button class="play-btn" data-target="player-pets">&#9654; Play</button>
             <span class="frame-counter" data-target="player-pets">Frame 2 / 40</span>
         </div>
     </div>
@@ -251,20 +347,29 @@ footer a:hover{color:var(--accent-light)}
         <h3><span class="dot"></span> Pedestrians &mdash; Outdoor</h3>
         <div class="video-grid">
             <div class="video-cell">
-                <canvas data-prefix="FiguresFile/ped/Input_ped_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                <div class="video-cell-inner">
+                    <canvas data-prefix="FiguresFile/ped/Input_ped_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                    <img class="video-poster" src="FiguresFile/in000470.png" alt="">
+                </div>
                 <div class="video-cell-label">Input \(\mathbf{z}_t\)</div>
             </div>
             <div class="video-cell">
-                <canvas data-prefix="FiguresFile/ped/Basispedestrians_tforpcaWO_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                <div class="video-cell-inner">
+                    <canvas data-prefix="FiguresFile/ped/Basispedestrians_tforpcaWO_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                    <img class="video-poster" src="FiguresFile/Basispedestrians_tforpcaWO.png" alt="">
+                </div>
                 <div class="video-cell-label"><strong>Ours</strong> &mdash; Background \(\mathbf{L}\)</div>
             </div>
             <div class="video-cell">
-                <canvas data-prefix="FiguresFile/ped/Noisepedestrians_tforpcaWO_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                <div class="video-cell-inner">
+                    <canvas data-prefix="FiguresFile/ped/Noisepedestrians_tforpcaWO_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                    <img class="video-poster" src="FiguresFile/Noisepedestrians_tforpcaWO.png" alt="">
+                </div>
                 <div class="video-cell-label"><strong>Ours</strong> &mdash; Foreground \(\mathbf{E}\)</div>
             </div>
         </div>
         <div class="video-controls">
-            <button class="play-btn active" data-target="player-ped">&#9654; Playing</button>
+            <button class="play-btn" data-target="player-ped">&#9654; Play</button>
             <span class="frame-counter" data-target="player-ped">Frame 2 / 40</span>
         </div>
     </div>
@@ -356,7 +461,7 @@ footer a:hover{color:var(--accent-light)}
             cells.push({canvas:canvas, ctx:ctx, frames:frames, start:start, end:end});
         });
 
-        players[id] = {cells:cells, frame:0, playing:true, interval:null};
+        players[id] = {cells:cells, frame:0, playing:false, interval:null};
     });
 
     function startPlayer(id){
@@ -386,8 +491,11 @@ footer a:hover{color:var(--accent-light)}
             var id = btn.dataset.target;
             var p = players[id];
             p.playing = !p.playing;
-            btn.innerHTML = p.playing ? '&#9654; Playing' : '&#9208; Paused';
+            btn.innerHTML = p.playing ? '&#9208; Pause' : '&#9654; Play';
             btn.classList.toggle('active', p.playing);
+            if(p.playing){
+                document.querySelectorAll('#'+id+' .video-poster').forEach(function(img){ img.classList.add('hidden'); });
+            }
         });
     });
 
@@ -412,6 +520,28 @@ footer a:hover{color:var(--accent-light)}
     document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
     lb.addEventListener('click', function(e){ if(e.target === lb) closeLightbox(); });
     document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeLightbox(); });
+
+    // Accordion — independent toggles
+    var expandCards = document.querySelectorAll('.card.expandable');
+    expandCards.forEach(function(card){
+        card.addEventListener('click', function(){
+            card.classList.toggle('open');
+            if(card.classList.contains('open') && window.MathJax) MathJax.typesetPromise([card]);
+        });
+    });
+
+    // Hint bubble — click to reveal all
+    var hint = document.querySelector('.algo-hint');
+    if(hint){
+        hint.addEventListener('click', function(){
+            var allOpen = Array.from(expandCards).every(function(c){ return c.classList.contains('open'); });
+            expandCards.forEach(function(c){
+                if(allOpen){ c.classList.remove('open'); }
+                else{ c.classList.add('open'); if(window.MathJax) MathJax.typesetPromise([c]); }
+            });
+            hint.textContent = allOpen ? '👆 click a card to view its pseudocode' : '👆 click again to collapse all';
+        });
+    }
 })();
 </script>
 </body>
