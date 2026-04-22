@@ -1,125 +1,418 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Lakshmi Jayalal | Research</title>
-    
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;600;700&display=swap" rel="stylesheet"> 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://kit.fontawesome.com/ce81bc62d6.js" crossorigin="anonymous"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TF-ORPCA | Tuning-Free Online Robust PCA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+<style>
+:root{--bg:#faf8f4;--bg-warm:#f5f0e8;--bg-card:#fff;--bg-code:#f0ece4;--bg-highlight:#fef3e2;--accent:#c45d3e;--accent-light:#e8734f;--accent-bg:#c45d3e0c;--accent-border:#c45d3e22;--teal:#1a7a6d;--teal-bg:#1a7a6d0a;--teal-border:#1a7a6d18;--text:#2c2418;--text-body:#4a3f33;--text-dim:#8a7e6e;--border:#e4ddd2;--border-light:#ede8df;--shadow:0 1px 3px rgba(44,36,24,.06),0 4px 12px rgba(44,36,24,.04);--shadow-lg:0 4px 16px rgba(44,36,24,.08),0 12px 40px rgba(44,36,24,.05)}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text-body);line-height:1.72;-webkit-font-smoothing:antialiased}
 
-    
-    <link rel="stylesheet" href="style.css">
+.hero{position:relative;padding:6rem 2rem 5rem;overflow:hidden;background:linear-gradient(170deg,#faf8f4 0%,#f5f0e8 40%,#fef3e2 100%)}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--border)}
+.hero-inner{max-width:820px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:.45rem;background:var(--accent-bg);border:1px solid var(--accent-border);color:var(--accent);padding:.3rem .9rem;border-radius:100px;font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.75rem}
+.hero h1{font-family:'Newsreader',serif;font-size:clamp(2rem,4.5vw,3.2rem);font-weight:700;color:var(--text);line-height:1.2;margin-bottom:1.25rem}
+.hero h1 em{font-style:italic;color:var(--accent)}
+.hero-subtitle{font-size:1.08rem;color:var(--text-dim);max-width:600px;margin-bottom:1.75rem;font-weight:400}
+.hero-meta{display:flex;flex-wrap:wrap;gap:1.25rem;font-size:.88rem;color:var(--text-dim);margin-bottom:1.75rem}
+.hero-meta strong{color:var(--text);font-weight:600}
+.hero-links{display:flex;gap:.75rem;flex-wrap:wrap}
+.hero-links a{display:inline-flex;align-items:center;gap:.45rem;padding:.55rem 1.2rem;border-radius:8px;font-size:.88rem;font-weight:500;text-decoration:none;transition:all .2s}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent-light);transform:translateY(-1px)}
+.btn-outline{background:var(--bg-card);color:var(--text);border:1px solid var(--border)}.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+
+.container{max-width:960px;margin:0 auto;padding:0 2rem}
+section{padding:3.5rem 0}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--accent);text-transform:uppercase;letter-spacing:.14em;font-weight:500;margin-bottom:.6rem}
+.section-title{font-family:'Newsreader',serif;font-size:1.65rem;font-weight:600;color:var(--text);margin-bottom:.75rem;line-height:1.3}
+.section-desc{color:var(--text-dim);max-width:600px;margin-bottom:2rem;font-size:.95rem}
+
+.card{background:var(--bg-card);border:1px solid var(--border-light);border-radius:10px;padding:1.75rem;margin-bottom:1.25rem;box-shadow:var(--shadow);transition:box-shadow .3s,border-color .3s}
+.card:hover{box-shadow:var(--shadow-lg);border-color:var(--border)}
+.card-warm{background:var(--bg-highlight);border-color:#f0dcc0}
+.card-teal{background:var(--teal-bg);border-color:var(--teal-border)}
+.card h3{font-family:'Newsreader',serif;font-size:1.08rem;font-weight:600;color:var(--text);margin-bottom:.6rem}
+.card p,.card li{font-size:.93rem;color:var(--text-body)}
+
+.tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.65rem;padding:.18rem .55rem;border-radius:4px;margin-bottom:.6rem;font-weight:500;letter-spacing:.03em}
+.tag-l1{background:#fde2db;color:#b93e1f}.tag-l2{background:#fef3c7;color:#92400e}.tag-frob{background:#e0e7ff;color:#3730a3}.tag-novel{background:#d1fae5;color:#065f46}
+
+.method-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+
+.eq-block{background:var(--bg-code);border:1px solid var(--border-light);border-radius:8px;padding:1.1rem 1.4rem;margin:1rem 0;overflow-x:auto}
+
+.algo{font-family:'JetBrains Mono',monospace;font-size:.76rem;background:var(--bg-code);border:1px solid var(--border-light);border-radius:8px;padding:1.25rem 1.5rem;margin:1rem 0;line-height:2;overflow-x:auto;white-space:pre;color:var(--text-body)}
+.algo .kw{color:var(--accent);font-weight:600}.algo .fn{color:var(--teal);font-weight:500}.algo .cm{color:var(--text-dim);font-style:italic}
+
+.figure-container{background:var(--bg-card);border:1px solid var(--border-light);border-radius:10px;padding:1.25rem;box-shadow:var(--shadow)}
+.figure-container img{width:100%;border-radius:6px;display:block}
+.figure-caption{font-size:.82rem;color:var(--text-dim);margin-top:.7rem;padding-top:.7rem;border-top:1px solid var(--border-light)}
+.figure-caption strong{color:var(--text-body)}
+.figure-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:1.5rem 0}
+.img-placeholder{background:var(--bg-warm);border:2px dashed var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;min-height:180px;color:var(--text-dim);font-size:.82rem;text-align:center;padding:1.5rem}
+.img-placeholder code{font-family:'JetBrains Mono',monospace;font-size:.75rem;background:var(--bg-code);padding:.1rem .4rem;border-radius:3px}
+
+/* ── Video animation ── */
+.video-dataset{background:var(--bg-card);border:1px solid var(--border-light);border-radius:10px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:var(--shadow)}
+.video-dataset h3{font-family:'Newsreader',serif;font-size:1rem;font-weight:600;color:var(--text);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+.video-dataset h3 .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+.video-cell{text-align:center}
+.video-cell canvas{width:100%;border-radius:6px;border:1px solid var(--border-light);background:#f0ece4;display:block}
+.video-cell-label{font-size:.72rem;color:var(--text-dim);margin-top:.4rem;font-weight:500}
+.video-cell-label strong{color:var(--accent)}
+
+.video-controls{display:flex;align-items:center;gap:.75rem;margin-top:1rem;padding-top:.75rem;border-top:1px solid var(--border-light)}
+.video-controls button{background:var(--bg-code);border:1px solid var(--border);border-radius:6px;padding:.35rem .75rem;cursor:pointer;font-size:.8rem;color:var(--text-body);font-family:'Outfit',sans-serif;transition:all .15s}
+.video-controls button:hover{border-color:var(--accent);color:var(--accent)}
+.video-controls button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.video-controls .frame-counter{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-dim);margin-left:auto}
+
+.comp-header-row{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px;font-size:.7rem;font-weight:600;text-align:center;color:var(--text-dim)}
+.comp-header-row .ours{color:var(--accent);font-weight:700}
+.comp-row{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px}
+.comp-row img{width:100%;border-radius:4px;border:1px solid var(--border-light);display:block;aspect-ratio:4/3;object-fit:cover;background:var(--bg-warm)}
+.comp-dataset-label{font-size:.78rem;font-weight:600;color:var(--text);margin-bottom:6px;margin-top:1rem}
+.comp-dataset-label:first-child{margin-top:0}
+
+.divider{border:none;border-top:1px solid var(--border);margin:0}
+
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--text-dim);font-size:.82rem;background:var(--bg-warm)}
+footer a{color:var(--accent);text-decoration:none;margin:0 .4rem;transition:color .2s}
+footer a:hover{color:var(--accent-light)}
+
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:700px){.figure-grid,.video-grid{grid-template-columns:1fr}.method-grid{grid-template-columns:1fr}.hero{padding:3.5rem 1.5rem 3rem}section{padding:2.5rem 0}}
+
+#lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out}
+#lightbox.open{display:flex}
+#lightbox img{max-width:90vw;max-height:90vh;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,.6);cursor:default}
+#lightbox-close{position:fixed;top:1.25rem;right:1.5rem;color:#fff;font-size:2rem;line-height:1;cursor:pointer;opacity:.7;transition:opacity .15s}
+#lightbox-close:hover{opacity:1}
+.lightbox-trigger{cursor:zoom-in}
+</style>
 </head>
 <body>
 
-<header class="header">
-    <nav>
-        <a href="index.html" class="logo">Lakshmi Jayalal</a>
-        <div class="nav-links" id="navLinks">
-            <ul>
-                <li><a href="index.html">HOME</a></li>
-            </ul>
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-badge"><i class="fas fa-signal"></i> ICASSP 2026 &middot; Barcelona</div>
+        <h1>Tuning-Free Online<br>Robust <em>PCA</em></h1>
+        <p class="hero-subtitle">Three implicit regularization techniques that eliminate parameter tuning from Online Robust PCA &mdash; with zero dataset-dependent adjustments.</p>
+        <div class="hero-meta">
+            <span><strong>Lakshmi Jayalal</strong>, Gokularam Muthukrishnan, Sheetal Kalyani</span>
+            <span>IIT Madras</span>
         </div>
-    </nav>
-    <div class="text-box">
-        <h1>Tuning-Free Online Robust PCA</h1>
-        <p>Summary</p>
-    </div>
-</header>
-
-<main class="visualization-wrapper">
-    <div class="paper-flow">
-
-        <div class="section-container">
-            <div class="section-label">I. Problem Formulation</div>
-            <div class="block problem-block">
-                <h3>Existing Challenge in Online Robust PCA (OR-PCA)</h3>
-                <p>The performance of OR-PCA heavily depends on tuning explicit regularization parameters. This tuning is dataset-sensitive, computationally expensive, and impractical for real-world streaming scenarios.</p>
-            </div>
-            <div class="block solution-block">
-                <h3>Proposed Direction: Implicit Regularization (IR)</h3>
-                <p>The paper proposes to eliminate the dependency on tuning parameters by using Implicit Regularization. IR leverages the inherent biases of specific optimization algorithms to guide models towards solutions with desired properties without explicit penalty terms.</p>
-            </div>
-        </div>
-
-        <div class="arrow">&darr;</div>
-
-        <div class="section-container">
-            <div class="section-label">II. Proposed Solution: The TF-ORPCA Framework</div>
-            <div class="block solution-block">
-                <h3>Tuning-Free Online Robust PCA (TF-ORPCA)</h3>
-                <p>A novel framework that integrates three tailored IR techniques, one for each sub-problem in OR-PCA, to remove the need for explicit regularizers.</p>
-            </div>
-            <div class="horizontal-split">
-                <div class="block method-block">
-                    <h3>1. Sparse Outlier Estimation (e<sub>t</sub>)</h3>
-                    <p>Uses a modified gradient descent (<strong>HPGrad</strong>) that implicitly induces sparsity, replacing the explicit <em>l<sub>1</sub></em>-norm penalty.</p>
-                </div>
-                 <div class="block method-block">
-                    <h3>2. Coefficient Estimation (r<sub>t</sub>)</h3>
-                    <p>Uses early-stopped Momentum Gradient Descent (<strong>MGD</strong>), which acts as an implicit <em>l<sub>2</sub></em>-regularizer, replacing the ridge regression penalty.</p>
-                </div>
-                 <div class="block method-block">
-                    <h3>3. Subspace Basis Estimation (L)</h3>
-                    <p>Employs a novel reparameterization and algorithm (<strong>HPGroupGrad</strong>) to implicitly mimic Frobenius norm regularization.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="arrow">&darr;</div>
-
-        <div class="section-container">
-            <div class="section-label">III. Experimental Validation</div>
-            <div class="horizontal-split">
-                <div class="validation-block block">
-                    <h3>A. Synthetic Data Studies</h3>
-                    <p><strong>Setup:</strong> Low-rank matrices were generated and corrupted with sparse outliers. Performance was measured by Expressed Variance (EV).</p>
-                     <div class="block result-block" style="margin-top:10px;">
-                        <p><strong>Finding:</strong> TF-ORPCA is consistently better than standard OR-PCA and achieves performance comparable to manually fine-tuned methods, without requiring any data-dependent tuning.</p>
-                    </div>
-                </div>
-                <div class="validation-block block">
-                    <h3>B. Real-World Data Studies</h3>
-                    <p><strong>Application:</strong> Video surveillance from three datasets (PETS2006, Pedestrians, Bungalows) to separate background (low-rank) from foreground objects (sparse outliers).</p>
-                     <div class="block result-block" style="margin-top:10px;">
-                        <p><strong>Finding:</strong> TF-ORPCA clearly extracts foreground/background components without artifacts (e.g., shadowing) that plague other methods, demonstrating its robustness across diverse datasets.</p>
-                    </div>
-                </div>
-            </div>
-             <div class="block validation-block">
-                <h3>C. Ablation Study</h3>
-                <p><strong>Purpose:</strong> To test the sensitivity of TF-ORPCA to its own fixed hyperparameters (learning rate and initialization value).</p>
-                <div class="block result-block" style="margin-top:10px;">
-                    <p><strong>Finding:</strong> The algorithm is remarkably stable and insensitive to variations in these parameters, highlighting its inherent robustness.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="arrow">&darr;</div>
-
-        <div class="section-container">
-            <div class="section-label">IV. Conclusion & Impact</div>
-            <div class="block conclusion-block">
-                <h3>Key Contributions & Takeaway</h3>
-                <p>The paper successfully introduces TF-ORPCA, a method that leverages three problem-specific IR techniques to eliminate the need for manual regularization parameter tuning. This makes the algorithm robust, insensitive to its own hyperparameters, and highly effective for real-world applications where tuning is impractical.</p>
-            </div>
+        <div class="hero-links">
+            <a href="https://arxiv.org/abs/2409.07275" class="btn-primary" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+            <a href="https://ieeexplore.ieee.org/document/11127046/" class="btn-outline" target="_blank"><i class="fas fa-book"></i> IEEE Xplore</a>
         </div>
     </div>
-</main>
+</section>
+
+<div class="container">
+
+<section class="reveal">
+    <div class="section-label">I. Problem</div>
+    <h2 class="section-title">OR-PCA needs careful tuning</h2>
+    <p class="section-desc">Standard OR-PCA decomposes streaming data into low-rank + sparse components, but its performance heavily depends on tuning two explicit regularization parameters &mdash; dataset-sensitive and impractical for real-world streaming.</p>
+    <div class="eq-block">\[\min_{\mathbf{X},\,\mathbf{E}}\ \frac{1}{2}\|\mathbf{Z}-\mathbf{X}-\mathbf{E}\|_F^2 + \lambda_1\|\mathbf{X}\|_* + \lambda_2\|\mathbf{E}\|_1\]</div>
+    <div class="card card-warm">
+        <h3>Three subproblems, two parameters to tune</h3>
+        <p>OR-PCA factorizes \(\mathbf{X} = \mathbf{L}\mathbf{R}^\top\) and alternates between estimating the sparse outlier \(\mathbf{e}_t\), the coefficient \(\mathbf{r}_t\), and the subspace basis \(\mathbf{L}\). Each involves an explicit regularizer (\(\lambda_1\) or \(\lambda_2\)) that must be tuned via grid search or cross-validation &mdash; methods that are computationally expensive and often fail to generalize to unseen data.</p>
+    </div>
+</section>
+
+<hr class="divider">
+
+<section class="reveal">
+    <div class="section-label">II. Approach</div>
+    <h2 class="section-title">TF-ORPCA &mdash; three implicit regularizers</h2>
+    <p class="section-desc">Replace each explicit regularizer with an implicit one that emerges from the optimization algorithm itself.</p>
+    <div class="method-grid">
+        <div class="card">
+            <span class="tag tag-l1">IMPLICIT &#x2113;&#x2081;</span>
+            <h3>HPGrad &mdash; Sparse outlier \(\mathbf{e}_t\)</h3>
+            <p>Decompose \(\mathbf{e} = \mathbf{m}^{\odot 2} - \mathbf{n}^{\odot 2}\). The multiplicative update drives non-significant components towards zero &mdash; implicit sparsity without \(\lambda_2\).</p>
+        </div>
+        <div class="card">
+            <span class="tag tag-l2">IMPLICIT &#x2113;&#x2082;</span>
+            <h3>MGD &mdash; Coefficient \(\mathbf{r}_t\)</h3>
+            <p>Early-stopped momentum gradient descent. The stopping time \(T_r\) is the implicit ridge parameter (\(\lambda = 2/t^2\)), replacing \(\lambda_1\) in the coefficient update.</p>
+        </div>
+        <div class="card">
+            <span class="tag tag-frob">IMPLICIT FROBENIUS</span> <span class="tag tag-novel" style="margin-left:.3rem;">NOVEL</span>
+            <h3>HPGroupGrad &mdash; Basis \(\mathbf{L}\)</h3>
+            <p>A new reparameterization \(\mathbf{L} = \mathbf{g}^{\odot 2}\mathbf{1}_r \odot \mathbf{V}\) separates row magnitude from direction, implicitly controlling \(\|\mathbf{L}\|_F^2\) without \(\lambda_1\).</p>
+        </div>
+    </div>
+</section>
+
+<hr class="divider">
+
+<section class="reveal">
+    <div class="section-label">III. Algorithm</div>
+    <h2 class="section-title">The TF-ORPCA loop</h2>
+    <p class="section-desc">Fixed hyperparameters across all datasets: \(\alpha = 10^{-5}\), \(\eta = 5 \times 10^{-3}\).</p>
+    <div class="algo"><span class="kw">for</span> t = 1 <span class="kw">to</span> n <span class="kw">do</span>
+    Reveal z_t
+    <span class="kw">repeat</span>
+        r_t &larr; <span class="fn">MGD</span>(z_t - e_t, T_r)            <span class="cm">// implicit l2</span>
+        e_t &larr; <span class="fn">HPGrad</span>(z_t - L&middot;r_t, T_e)      <span class="cm">// implicit l1</span>
+    <span class="kw">until</span> convergence
+    L   &larr; <span class="fn">HPGroupGrad</span>(z_t - e_t, r_t, T_L, L)  <span class="cm">// implicit Frobenius</span>
+<span class="kw">end for</span>
+<span class="kw">return</span> L, R, E</div>
+</section>
+
+<hr class="divider">
+
+<section class="reveal">
+    <div class="section-label">IV. Results &mdash; Synthetic</div>
+    <h2 class="section-title">Expressed Variance &amp; ablation</h2>
+    <p class="section-desc">TF-ORPCA matches carefully tuned baselines without any tuning; performance is stable across wide ranges of \(\eta\) and \(\alpha\).</p>
+    <div class="figure-grid">
+        <div class="figure-container">
+            <img class="lightbox-trigger" src="FiguresFile/EV_Comparison_Combined.png" alt="EV comparison" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="img-placeholder" style="display:none"><span>Place <code>EV_Comparison_Combined.png</code> in FiguresFile/</span></div>
+            <div class="figure-caption"><strong>Fig 1.</strong> EV vs. number of samples. TF-ORPCA consistently outperforms default OR-PCA (EV &le; 0.4).</div>
+        </div>
+        <div class="figure-container">
+            <img class="lightbox-trigger" src="FiguresFile/Combined_Ablation_Plot_Spelling.png" alt="Ablation" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="img-placeholder" style="display:none"><span>Place <code>Combined_Ablation_Plot.png</code> in FiguresFile/</span></div>
+            <div class="figure-caption"><strong>Fig 2.</strong> Ablation &mdash; EV is stable across learning rate and initialization ranges.</div>
+        </div>
+    </div>
+</section>
+
+<hr class="divider">
+
+<section class="reveal">
+    <div class="section-label">V. Results &mdash; Video Surveillance</div>
+    <h2 class="section-title">Background / foreground separation</h2>
+    <p class="section-desc">Same hyperparameters for all three datasets. Frames loop at 10 fps, matching the paper&rsquo;s animated results.</p>
+
+    <div class="video-dataset" id="player-bun">
+        <h3><span class="dot"></span> Bungalows &mdash; Dynamic lighting</h3>
+        <div class="video-grid">
+            <div class="video-cell">
+                <canvas data-prefix="FiguresFile/bun/Input_bun_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                <div class="video-cell-label">Input \(\mathbf{z}_t\)</div>
+            </div>
+            <div class="video-cell">
+                <canvas data-prefix="FiguresFile/bun/Basisbungalows_tforpcaWO_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                <div class="video-cell-label"><strong>Ours</strong> &mdash; Background \(\mathbf{L}\)</div>
+            </div>
+            <div class="video-cell">
+                <canvas data-prefix="FiguresFile/bun/Noisebungalows_tforpcaWO_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                <div class="video-cell-label"><strong>Ours</strong> &mdash; Foreground \(\mathbf{E}\)</div>
+            </div>
+        </div>
+        <div class="video-controls">
+            <button class="play-btn active" data-target="player-bun">&#9654; Playing</button>
+            <span class="frame-counter" data-target="player-bun">Frame 2 / 40</span>
+        </div>
+    </div>
+
+    <div class="video-dataset" id="player-pets">
+        <h3><span class="dot"></span> PETS2006 &mdash; Surveillance</h3>
+        <div class="video-grid">
+            <div class="video-cell">
+                <canvas data-prefix="FiguresFile/PETS/Input_PETS_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                <div class="video-cell-label">Input \(\mathbf{z}_t\)</div>
+            </div>
+            <div class="video-cell">
+                <canvas data-prefix="FiguresFile/PETS/BasisPETS_tforpcaWO_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                <div class="video-cell-label"><strong>Ours</strong> &mdash; Background \(\mathbf{L}\)</div>
+            </div>
+            <div class="video-cell">
+                <canvas data-prefix="FiguresFile/PETS/NoisePETS_tforpcaWO_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                <div class="video-cell-label"><strong>Ours</strong> &mdash; Foreground \(\mathbf{E}\)</div>
+            </div>
+        </div>
+        <div class="video-controls">
+            <button class="play-btn active" data-target="player-pets">&#9654; Playing</button>
+            <span class="frame-counter" data-target="player-pets">Frame 2 / 40</span>
+        </div>
+    </div>
+
+    <div class="video-dataset" id="player-ped">
+        <h3><span class="dot"></span> Pedestrians &mdash; Outdoor</h3>
+        <div class="video-grid">
+            <div class="video-cell">
+                <canvas data-prefix="FiguresFile/ped/Input_ped_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                <div class="video-cell-label">Input \(\mathbf{z}_t\)</div>
+            </div>
+            <div class="video-cell">
+                <canvas data-prefix="FiguresFile/ped/Basispedestrians_tforpcaWO_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                <div class="video-cell-label"><strong>Ours</strong> &mdash; Background \(\mathbf{L}\)</div>
+            </div>
+            <div class="video-cell">
+                <canvas data-prefix="FiguresFile/ped/Noisepedestrians_tforpcaWO_" data-start="2" data-end="40" width="320" height="240"></canvas>
+                <div class="video-cell-label"><strong>Ours</strong> &mdash; Foreground \(\mathbf{E}\)</div>
+            </div>
+        </div>
+        <div class="video-controls">
+            <button class="play-btn active" data-target="player-ped">&#9654; Playing</button>
+            <span class="frame-counter" data-target="player-ped">Frame 2 / 40</span>
+        </div>
+    </div>
+
+    <!-- <div class="card" style="margin-top:2rem">
+        <h3>Static comparison &mdash; all methods, single frame</h3>
+        <div class="comp-header-row">
+            <span>Original</span><span class="ours">Ours (L)</span><span class="ours">Ours (E)</span><span>OR-PCA (L)</span><span>OR-PCA (E)</span><span>OMW (L)</span><span>OMW (E)</span>
+        </div>
+        <div class="comp-dataset-label">PETS2006</div>
+        <div class="comp-row">
+            <img class="lightbox-trigger" src="FiguresFile/in000120.png" alt=""><img class="lightbox-trigger" src="FiguresFile/BasisPETS_tforpcaWO.png" alt=""><img class="lightbox-trigger" src="FiguresFile/NoisePETS_tforpcaWO.png" alt=""><img class="lightbox-trigger" src="FiguresFile/BasisPETS_Stochpca.png" alt=""><img class="lightbox-trigger" src="FiguresFile/NoisePETS_Stochpca.png" alt=""><img class="lightbox-trigger" src="FiguresFile/BasisPETS_omwpca.png" alt=""><img class="lightbox-trigger" src="FiguresFile/NoisePETS_omwpca.png" alt="">
+        </div>
+        <div class="comp-dataset-label">Pedestrians</div>
+        <div class="comp-row">
+            <img class="lightbox-trigger" src="FiguresFile/in000470.png" alt=""><img class="lightbox-trigger" src="FiguresFile/Basispedestrians_tforpcaWO.png" alt=""><img class="lightbox-trigger" src="FiguresFile/Noisepedestrians_tforpcaWO.png" alt=""><img class="lightbox-trigger" src="FiguresFile/Basispedestrians_Stochpca.png" alt=""><img class="lightbox-trigger" src="FiguresFile/Noisepedestrians_Stochpca.png" alt=""><img class="lightbox-trigger" src="FiguresFile/Basispedestrians_omwpca.png" alt=""><img class="lightbox-trigger" src="FiguresFile/Noisepedestrians_omwpca.png" alt="">
+        </div>
+        <div class="comp-dataset-label">Bungalows</div>
+        <div class="comp-row">
+            <img class="lightbox-trigger" src="FiguresFile/in001170.png" alt=""><img class="lightbox-trigger" src="FiguresFile/Basisbungalows_tforpcaWO.png" alt=""><img class="lightbox-trigger" src="FiguresFile/Noisebungalows_tforpcaWO.png" alt=""><img class="lightbox-trigger" src="FiguresFile/Basisbungalows_Stochpca.png" alt=""><img class="lightbox-trigger" src="FiguresFile/Noisebungalows_Stochpca.png" alt=""><img class="lightbox-trigger" src="FiguresFile/Basisbungalows_omwpca.png" alt=""><img class="lightbox-trigger" src="FiguresFile/Noisebungalows_omwpca.png" alt="">
+        </div>
+    </div>
+</section> -->
+
+<hr class="divider">
+
+<section class="reveal">
+    <div class="section-label">VI. Takeaway</div>
+    <h2 class="section-title">Three implicit regularizers, zero tuning</h2>
+    <div class="card card-teal">
+        <p style="font-size:1rem;color:var(--text)">TF-ORPCA employs three problem-specific implicit regularization techniques &mdash; a modified gradient descent for implicit \(\ell_1\), an early-stopped MGD for implicit \(\ell_2\), and a novel reparameterization for implicit Frobenius norm control. Unlike traditional OR-PCA, the algorithm is insensitive to its own hyperparameters and does not require extensive tuning. It clearly extracts foreground and background components without the artifacts &mdash; shadowing, gray patches &mdash; often seen with traditional approaches.</p>
+    </div>
+</section>
+
+</div>
 
 <footer>
-    <div class="footer-content">
-        <p>&copy; 2025 Lakshmi Jayalal. All Rights Reserved.</p>
-        <div class="social-links">
-            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-            <a href="#" aria-label="Google Scholar"><i class="fas fa-graduation-cap"></i></a>
-            <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-        </div>
+    <p>&copy; 2025 Lakshmi Jayalal &middot; IIT Madras</p>
+    <div style="margin-top:.4rem">
+        <a href="https://arxiv.org/abs/2409.07275" target="_blank"><i class="fas fa-file-alt"></i> arXiv</a>
+        <a href="https://ieeexplore.ieee.org/document/11127046/" target="_blank"><i class="fas fa-book"></i> IEEE</a>
     </div>
 </footer>
 
+<div id="lightbox"><span id="lightbox-close">&times;</span><img id="lightbox-img" src="" alt=""></div>
+
+<script>
+/* ═══ Frame Animation Engine ═══
+ * Mimics \animategraphics{10}{prefix}{start}{end} from LaTeX.
+ * Each <canvas data-prefix="..." data-start="2" data-end="40">
+ * loads numbered PNG frames and cycles at 10 fps.
+ *
+ * FILE SETUP: Place your frame images so that e.g.
+ *   FiguresFile/bun/Input_bun_2.png ... FiguresFile/bun/Input_bun_40.png
+ * exist next to this HTML file.
+ *
+ * If your frames are JPEG, change EXT below to '.jpg'.
+ */
+(function(){
+    var FPS = 10;
+    var EXT = '.png';
+    var players = {};
+
+    document.querySelectorAll('.video-dataset').forEach(function(container){
+        var id = container.id;
+        var canvases = container.querySelectorAll('canvas[data-prefix]');
+        var cells = [];
+
+        canvases.forEach(function(canvas){
+            var prefix = canvas.dataset.prefix;
+            var start = parseInt(canvas.dataset.start);
+            var end = parseInt(canvas.dataset.end);
+            var ctx = canvas.getContext('2d');
+            var frames = [];
+
+            for(var i = start; i <= end; i++){
+                var img = new Image();
+                img.src = prefix + i + EXT;
+                (function(c, im){
+                    im.onload = function(){
+                        if(c.width !== im.naturalWidth){
+                            c.width = im.naturalWidth;
+                            c.height = im.naturalHeight;
+                        }
+                    };
+                })(canvas, img);
+                frames.push(img);
+            }
+            cells.push({canvas:canvas, ctx:ctx, frames:frames, start:start, end:end});
+        });
+
+        players[id] = {cells:cells, frame:0, playing:true, interval:null};
+    });
+
+    function startPlayer(id){
+        var p = players[id];
+        if(p.interval) clearInterval(p.interval);
+        p.interval = setInterval(function(){
+            if(!p.playing) return;
+            p.cells.forEach(function(cell){
+                var idx = p.frame % cell.frames.length;
+                var img = cell.frames[idx];
+                if(img.complete && img.naturalWidth > 0){
+                    cell.ctx.clearRect(0, 0, cell.canvas.width, cell.canvas.height);
+                    cell.ctx.drawImage(img, 0, 0, cell.canvas.width, cell.canvas.height);
+                }
+            });
+            var counter = document.querySelector('.frame-counter[data-target="'+id+'"]');
+            if(counter && p.cells.length > 0){
+                var c = p.cells[0];
+                counter.textContent = 'Frame ' + (c.start + (p.frame % c.frames.length)) + ' / ' + c.end;
+            }
+            p.frame++;
+        }, 1000 / FPS);
+    }
+
+    document.querySelectorAll('.play-btn').forEach(function(btn){
+        btn.addEventListener('click', function(){
+            var id = btn.dataset.target;
+            var p = players[id];
+            p.playing = !p.playing;
+            btn.innerHTML = p.playing ? '&#9654; Playing' : '&#9208; Paused';
+            btn.classList.toggle('active', p.playing);
+        });
+    });
+
+    Object.keys(players).forEach(startPlayer);
+
+    var obs = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('visible'); });
+    }, {threshold:0.1});
+    document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
+
+    // Lightbox
+    var lb = document.getElementById('lightbox');
+    var lbImg = document.getElementById('lightbox-img');
+    document.querySelectorAll('.lightbox-trigger').forEach(function(img){
+        img.addEventListener('click', function(){
+            lbImg.src = img.src;
+            lbImg.alt = img.alt;
+            lb.classList.add('open');
+        });
+    });
+    function closeLightbox(){ lb.classList.remove('open'); lbImg.src=''; }
+    document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+    lb.addEventListener('click', function(e){ if(e.target === lb) closeLightbox(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeLightbox(); });
+})();
+</script>
 </body>
 </html>
